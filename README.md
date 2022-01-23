@@ -1,5 +1,3 @@
-This template repo is intended to set up a cicd workflow that
-runs test builds on branches and deploys to itchio from main
 
 Initial Template Setup
 ======================
