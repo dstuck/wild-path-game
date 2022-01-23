@@ -73,7 +73,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: webgl-beta
-          ITCH_GAME: PROJECT_NAME
-          ITCH_USER: USER_NAME
+          ITCH_GAME: wild_path
+          ITCH_USER: drawacard
           PACKAGE: WebGL
 
