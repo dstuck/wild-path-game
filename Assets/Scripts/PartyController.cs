@@ -42,10 +42,8 @@ public class PartyController : MonoBehaviour
 
     void ModifyDirection(float degrees)
     {
-        //Quaternion rotation = transform.rotation;
-        //rotation.z = rotation.z + degrees;
         gameObject.transform.Rotate(rotationUnit * degrees);
-        moveDirection = Quaternion.Euler(0, 0, degrees) * moveDirection;
+        //moveDirection = Quaternion.Euler(0, 0, degrees) * moveDirection;
     }
 
     void FixedUpdate()
@@ -53,8 +51,8 @@ public class PartyController : MonoBehaviour
         ModifyDirection(-horizontal * turnSpeed);
         if (!IsFrozen)
         {
-            Vector2 newPosition = rigidbody2d.position + moveDirection * speed * Time.deltaTime;
-
+            Vector2 newPosition = rigidbody2d.position + (Vector2) gameObject.transform.TransformDirection((Vector3) moveDirection) * speed * Time.deltaTime;
+            
             rigidbody2d.MovePosition(newPosition);
         }
     }
