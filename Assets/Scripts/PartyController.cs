@@ -10,17 +10,20 @@ public class PartyController : MonoBehaviour
     private bool _isFrozen = true;
     public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
 
-    Vector2 moveDirection = new Vector2(1.0f, 0.0f);
+    Vector2 moveDirection = new Vector2(0.0f, 1.0f);
+    Vector3 rotationUnit = new Vector3(0.0f, 0.0f, 1.0f);
     float horizontal;
     float vertical;
 
     Rigidbody2D rigidbody2d;
+    //Transform transform;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
+        //transform = GetComponent<Transform>();
         horizontal = 0.0f;
         vertical = 0.0f;
     }
@@ -35,20 +38,21 @@ public class PartyController : MonoBehaviour
         {
             IsFrozen = false;
         }
-        Debug.Log("horizontal" + horizontal);
-        Debug.Log("IsFrozen" + IsFrozen);
     }
 
     void ModifyDirection(float degrees)
     {
+        //Quaternion rotation = transform.rotation;
+        //rotation.z = rotation.z + degrees;
+        gameObject.transform.Rotate(rotationUnit * degrees);
         moveDirection = Quaternion.Euler(0, 0, degrees) * moveDirection;
     }
 
     void FixedUpdate()
     {
+        ModifyDirection(-horizontal * turnSpeed);
         if (!IsFrozen)
         {
-            ModifyDirection(-horizontal * turnSpeed);
             Vector2 newPosition = rigidbody2d.position + moveDirection * speed * Time.deltaTime;
 
             rigidbody2d.MovePosition(newPosition);
