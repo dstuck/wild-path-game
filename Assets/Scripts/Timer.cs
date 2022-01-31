@@ -29,6 +29,10 @@ public class Timer : MonoBehaviour
     void FixedUpdate()
     {
         slider.value -= decayPerSecond * Time.deltaTime;
+        if(slider.value <= 0.0f)
+        {
+            FindObjectOfType<GameManager>().EndJourney();
+        }
     }
 
     public void Reset()
