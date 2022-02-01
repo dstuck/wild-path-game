@@ -40,12 +40,10 @@ public class PartyController : MonoBehaviour
         }
     }
 
-    void ModifyDirection(float degrees)
+    public void ModifyDirection(float degrees)
     {
-        //Quaternion rotation = transform.rotation;
-        //rotation.z = rotation.z + degrees;
         gameObject.transform.Rotate(rotationUnit * degrees);
-        moveDirection = Quaternion.Euler(0, 0, degrees) * moveDirection;
+        //moveDirection = Quaternion.Euler(0, 0, degrees) * moveDirection;
     }
 
     void FixedUpdate()
@@ -53,9 +51,23 @@ public class PartyController : MonoBehaviour
         ModifyDirection(-horizontal * turnSpeed);
         if (!IsFrozen)
         {
-            Vector2 newPosition = rigidbody2d.position + moveDirection * speed * Time.deltaTime;
-
+            Vector2 newPosition = rigidbody2d.position + (Vector2) gameObject.transform.TransformDirection((Vector3) moveDirection) * speed * Time.deltaTime;
+            
             rigidbody2d.MovePosition(newPosition);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        EnvironmentalObject envObj = collision.gameObject.GetComponent<EnvironmentalObject>();
+        if (envObj != null)
+        {
+            envObj.OnPlayerCollision(this);
+        }
+        if (collision.gameObject.name == "Gold")
+        {
+            FindObjectOfType<GameManager>().EndJourney();
+        }
+
     }
 }
