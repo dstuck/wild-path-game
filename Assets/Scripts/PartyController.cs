@@ -64,5 +64,10 @@ public class PartyController : MonoBehaviour
         {
             envObj.OnPlayerCollision(this);
         }
+        if (collision.gameObject.name == "Gold")
+        {
+            FindObjectOfType<GameManager>().EndJourney();
+        }
+
     }
 }

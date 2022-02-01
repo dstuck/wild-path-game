@@ -5,6 +5,7 @@ using UnityEngine.UI;using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public Slider slider;
+    public float defaultMaxTime = 20.0f;
 
     private float decayPerSecond = 1.0f;
 
@@ -22,7 +23,7 @@ public class Timer : MonoBehaviour
 
     private void Start()
     {
-        SetMaxTime(30.0f);
+        SetMaxTime(defaultMaxTime);
         Reset();
     }
 
