@@ -5,7 +5,9 @@ using UnityEngine;
 public class EnvManager : MonoBehaviour
 {
     public GameObject forestPrefab;
-    public float nForests;
+    public GameObject windPrefab;
+    public int nForests;
+    public int nWind;
 
     private List<GameObject> envObjects = new List<GameObject>();
 
@@ -22,13 +24,18 @@ public class EnvManager : MonoBehaviour
         {
             Destroy(envObj);
         }
-        for (int i = 0; i < nForests; i ++)
+        GenerateGameObjects(forestPrefab, nForests, 0.3f, 10.0f, 0.3f, 5.0f);
+        GenerateGameObjects(windPrefab, nWind, 10.0f, 20.0f, 0.3f, 5.0f);
+    }
+
+    void GenerateGameObjects(GameObject envObj, int nObjs, float minX, float maxX, float minY, float maxY) {
+        for (int i = 0; i < nObjs; i++)
         {
-            float x = Random.Range(0.3f, 10.0f);
-            float y = Random.Range(0.3f, 5.0f);
+            float x = Random.Range(minX, maxX);
+            float y = Random.Range(minY, maxY);
             Vector2 spawnPoint = new Vector2(x, y);
-            GameObject forest = Instantiate(forestPrefab, spawnPoint, Quaternion.identity);
-            envObjects.Add(forest);
+            GameObject obj = Instantiate(envObj, spawnPoint, Quaternion.identity);
+            envObjects.Add(obj);
         }
     }
 }
