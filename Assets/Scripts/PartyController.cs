@@ -7,6 +7,8 @@ public class PartyController : MonoBehaviour
     public float speed = 1.0f;
     public float turnSpeed = 1.0f;
 
+    public int goldCount = 0;
+    private int winningGoldCount = 2;
     private bool _isFrozen = true;
     public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
 
@@ -23,7 +25,6 @@ public class PartyController : MonoBehaviour
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
-        //transform = GetComponent<Transform>();
         horizontal = 0.0f;
         vertical = 0.0f;
     }
@@ -64,9 +65,12 @@ public class PartyController : MonoBehaviour
         {
             envObj.OnPlayerCollision(this);
         }
-        if (collision.gameObject.name == "Gold")
+        if (collision.gameObject.GetComponent<Gold>() != null)
         {
-            FindObjectOfType<GameManager>().EndJourney();
+            goldCount += 1;
+            if (goldCount >= winningGoldCount) {
+               FindObjectOfType<GameManager>().EndJourney();
+            }
         }
 
     }
