@@ -24,8 +24,8 @@ public class EnvManager : MonoBehaviour
         {
             Destroy(envObj);
         }
-        GenerateGameObjects(forestPrefab, nForests, 0.3f, 10.0f, 0.3f, 5.0f);
-        GenerateGameObjects(windPrefab, nWind, 10.0f, 20.0f, 0.3f, 5.0f);
+        GenerateGameObjects(forestPrefab, nForests, 10.0f, 20.0f, 0.3f, 5.0f);
+        GenerateGameObjects(windPrefab, nWind, 0.3f, 10.0f, 0.3f, 5.0f);
     }
 
     void GenerateGameObjects(GameObject envObj, int nObjs, float minX, float maxX, float minY, float maxY) {
