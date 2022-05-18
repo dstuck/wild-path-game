@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     bool hasJourneyEnded;
-    public float restartDelay = 1.0f;
+    public float restartDelay = 0.5f;
 
     public void EndJourney()
     {
@@ -18,9 +18,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EndGame()
+    {
+        if (!hasJourneyEnded)
+        {
+            hasJourneyEnded = true;
+            FindObjectOfType<PartyController>().IsFrozen = true;
+            Invoke("Restart", restartDelay);
+        }
+    }
+
     void RestartJourney()
     {
-        Restart();
+        hasJourneyEnded = false;
+        FindObjectOfType<Timer>().Reset();
+        FindObjectOfType<PartyController>().Reset();
     }
 
     void Restart()

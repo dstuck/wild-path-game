@@ -12,6 +12,9 @@ public class PartyController : MonoBehaviour
     private bool _isFrozen = true;
     public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
 
+    Vector3 startPos;
+
+
     Vector2 moveDirection = new Vector2(0.0f, 1.0f);
     Vector3 rotationUnit = new Vector3(0.0f, 0.0f, 1.0f);
     float horizontal;
@@ -27,6 +30,13 @@ public class PartyController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         horizontal = 0.0f;
         vertical = 0.0f;
+        startPos = transform.position;
+    }
+
+    public void Reset()
+    {
+        IsFrozen = true;
+        transform.position = startPos;
     }
 
     // Update is called once per frame
@@ -69,7 +79,8 @@ public class PartyController : MonoBehaviour
         {
             goldCount += 1;
             if (goldCount >= winningGoldCount) {
-               FindObjectOfType<GameManager>().EndJourney();
+                
+                FindObjectOfType<GameManager>().EndGame();
             }
         }
 
