@@ -1,3 +1,4 @@
 ## Fog of War
 For reasons I don't understand, the raw image on the canvas needs to
 have width and height 2x the size of the fog of war camera
+tutorial here: https://www.youtube.com/watch?v=MUV9Nr-cIGU&ab_channel=Santzo84
