@@ -9,8 +9,11 @@ public class PartyController : MonoBehaviour
 
     public int goldCount = 0;
     private int winningGoldCount = 2;
-    private bool _isFrozen = true;
-    public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
+
+    public bool IsFrozen { get; set; } = true;
+
+    public JobBase[] availableJobs;
+    private JobBase curJob;
 
     Vector3 startPos;
 
@@ -27,6 +30,9 @@ public class PartyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        availableJobs = new JobBase[] { new RangerJob(), new KnightJob() };
+        ChangeJob(0);
+
         rigidbody2d = GetComponent<Rigidbody2D>();
         horizontal = 0.0f;
         vertical = 0.0f;
@@ -48,6 +54,30 @@ public class PartyController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             IsFrozen = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            ChangeJob(0);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            ChangeJob(1);
+        }
+
+    }
+
+    void ChangeJob(int newIndex)
+    {
+        Debug.Log("Changing job to: " + newIndex);
+        if (curJob != availableJobs[newIndex])
+        {
+            Debug.Log("New job, setting sprite");
+
+            curJob = availableJobs[newIndex];
+            curJob.SetSprite(gameObject);
+            speed = curJob.GetSpeed();
+            turnSpeed = curJob.GetTurnSpeed();
         }
     }
 
