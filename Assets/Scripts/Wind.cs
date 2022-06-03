@@ -26,7 +26,6 @@ public class Wind : EnvironmentalObject
         //Quaternion fullRotation = Quaternion.FromToRotation(player.transform.up, transform.right);
         float fullRotation = Vector2.SignedAngle(player.transform.up, transform.right);
 
-        Debug.Log(player.transform.forward + ", " + transform.forward + ", " + fullRotation);
         player.ModifyDirection(
             Mathf.Max(Mathf.Min(fullRotation, maxRotation), -maxRotation)
         );

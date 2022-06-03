@@ -9,6 +9,8 @@ public class Timer : MonoBehaviour
 
     private float decayPerSecond = 1.0f;
 
+    GameManager gameManager;
+
     public float DecayPerSecond
     {
         get { return decayPerSecond; }
@@ -23,16 +25,30 @@ public class Timer : MonoBehaviour
 
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
+
         SetMaxTime(defaultMaxTime);
         Reset();
     }
 
     void FixedUpdate()
     {
-        slider.value -= decayPerSecond * Time.deltaTime;
-        if(slider.value <= 0.0f)
+        switch (gameManager.State)
         {
-            FindObjectOfType<GameManager>().EndJourney();
+            case GameState.PreLaunch:
+                break;
+            case GameState.Traveling:
+                slider.value -= decayPerSecond * Time.deltaTime;
+                if (slider.value <= 0.0f)
+                {
+                    gameManager.EndJourney();
+                }
+                break;
+            case GameState.Reseting:
+                break;
+            default:
+                Debug.Log("Shouldn't be here in case statement");
+                break;
         }
     }
 
