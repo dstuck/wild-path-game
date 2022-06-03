@@ -13,7 +13,7 @@ public class KnightJob : JobBase
 
     public override float GetTurnSpeed()
     {
-        return 0.8f;
+        return 1.0f;
     }
 
     public override void SetSprite(GameObject player)

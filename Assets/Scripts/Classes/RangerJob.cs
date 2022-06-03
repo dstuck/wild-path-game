@@ -8,12 +8,12 @@ public class RangerJob : JobBase
     //public RangerJob(GameObject _player) : base(_player) { }
     public override float GetSpeed()
     {
-        return 0.8f;
+        return 1.0f;
     }
 
     public override float GetTurnSpeed()
     {
-        return 1.2f;
+        return 1.5f;
     }
 
     public override void SetSprite(GameObject player)

@@ -3,41 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState
+{
+    PreLaunch,
+    Traveling,
+    Reseting
+}
+
 public class GameManager : MonoBehaviour
 {
-    bool hasJourneyEnded;
     public float restartDelay = 0.5f;
+    public GameState State { get; set; }
 
+    void Start()
+    {
+        State = GameState.PreLaunch;
+    }
     public void EndJourney()
     {
-        if(!hasJourneyEnded)
+        if(State != GameState.Reseting)
         {
-            hasJourneyEnded = true;
-            FindObjectOfType<PartyController>().IsFrozen = true;
+            State = GameState.Reseting;
             Invoke("RestartJourney", restartDelay);
         }
     }
 
     public void EndGame()
     {
-        if (!hasJourneyEnded)
+        if (State != GameState.Reseting)
         {
-            hasJourneyEnded = true;
-            FindObjectOfType<PartyController>().IsFrozen = true;
+            State = GameState.Reseting;
             Invoke("Restart", restartDelay);
         }
     }
 
     void RestartJourney()
     {
-        hasJourneyEnded = false;
+        State = GameState.PreLaunch;
+
         FindObjectOfType<Timer>().Reset();
         FindObjectOfType<PartyController>().Reset();
     }
 
     void Restart()
     {
-        hasJourneyEnded = false;
+        State = GameState.PreLaunch;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

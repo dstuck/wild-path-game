@@ -13,10 +13,11 @@ public class PartyController : MonoBehaviour
     public bool IsFrozen { get; set; } = true;
 
     public JobBase[] availableJobs;
-    private JobBase curJob;
+    //private JobBase curJob;
+    private int curJobIndex;
 
     Vector3 startPos;
-
+    Quaternion startDirection;
 
     Vector2 moveDirection = new Vector2(0.0f, 1.0f);
     Vector3 rotationUnit = new Vector3(0.0f, 0.0f, 1.0f);
@@ -25,52 +26,72 @@ public class PartyController : MonoBehaviour
 
     Rigidbody2D rigidbody2d;
     //Transform transform;
+    GameManager gameManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
+
         availableJobs = new JobBase[] { new RangerJob(), new KnightJob() };
-        ChangeJob(0);
+        curJobIndex = 0;
+        ChangeJob(curJobIndex, true);
 
         rigidbody2d = GetComponent<Rigidbody2D>();
         horizontal = 0.0f;
         vertical = 0.0f;
         startPos = transform.position;
+        startDirection = transform.rotation;
     }
 
     public void Reset()
     {
         IsFrozen = true;
         transform.position = startPos;
+        transform.rotation = startDirection;
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        switch (gameManager.State)
         {
-            IsFrozen = false;
+            case GameState.PreLaunch:
+                IsFrozen = true;
+                if (Input.GetKeyDown(KeyCode.Z))
+                {
+                    ChangeJob((curJobIndex + availableJobs.Length - 1) % availableJobs.Length);
+                }
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    ChangeJob((curJobIndex + 1) % availableJobs.Length);
+                }
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    gameManager.State = GameState.Traveling;
+                }
+                break;
+            case GameState.Traveling:
+                IsFrozen = false;
+                horizontal = Input.GetAxis("Horizontal");
+                vertical = Input.GetAxis("Vertical");
+                break;
+            case GameState.Reseting:
+                IsFrozen = true;
+                break;
+            default:
+                Debug.Log("Shouldn't be here in case statement");
+                break;
         }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            ChangeJob(0);
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ChangeJob(1);
-        }
-
     }
 
-    void ChangeJob(int newIndex)
+    void ChangeJob(int newIndex, bool reset = false)
     {
         Debug.Log("Changing job to: " + newIndex);
-        if (curJob != availableJobs[newIndex])
+        JobBase curJob = availableJobs[curJobIndex];
+        if ((curJob != availableJobs[newIndex]) | reset)
         {
             Debug.Log("New job, setting sprite");
 
@@ -78,6 +99,7 @@ public class PartyController : MonoBehaviour
             curJob.SetSprite(gameObject);
             speed = curJob.GetSpeed();
             turnSpeed = curJob.GetTurnSpeed();
+            curJobIndex = newIndex;
         }
     }
 
@@ -109,8 +131,7 @@ public class PartyController : MonoBehaviour
         {
             goldCount += 1;
             if (goldCount >= winningGoldCount) {
-                
-                FindObjectOfType<GameManager>().EndGame();
+                gameManager.EndGame();
             }
         }
 
